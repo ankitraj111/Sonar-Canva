@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Front-Looking Sonar System - Professional Configuration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-content">
+      <h1>⚓ Front-Looking Sonar System</h1>
+      <div class="header-subtitle">Professional Maritime Detection &amp; Analysis</div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Left Sidebar - Configuration Panel -->
+    <aside class="config-panel">
+      <div class="panel-header">
+        <h2>⚙️ Configuration Panel</h2>
+      </div>
+      <div class="panel-content">
+        
+        <!-- Section 1: Range Settings -->
+        <div class="config-section">
+          <div class="section-header" data-section="range">
+            <span class="section-icon">📏</span>
+            <span class="section-title">Range Settings</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="range-section">
+            <div class="control-group">
+              <label>MIN Range (m): <span id="min-range-value">200</span></label>
+              <input type="range" id="min-range" min="50" max="500" value="200" step="10">
+            </div>
+            <div class="control-group">
+              <label>MAX Range (m): <span id="max-range-value">800</span></label>
+              <input type="range" id="max-range" min="300" max="2000" value="800" step="50">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Scan Parameters -->
+        <div class="config-section">
+          <div class="section-header" data-section="scan">
+            <span class="section-icon">📡</span>
+            <span class="section-title">Scan Parameters</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="scan-section">
+            <div class="control-group">
+              <label>Field of View (°): <span id="fov-value">120</span></label>
+              <input type="range" id="fov" min="30" max="180" value="120" step="10">
+            </div>
+            <div class="control-group">
+              <label>Beam Speed (deg/frame): <span id="beam-speed-value">0.35</span></label>
+              <input type="range" id="beam-speed" min="0.1" max="2.0" value="0.35" step="0.05">
+            </div>
+            <div class="control-group">
+              <label>Beam Width (°): <span id="beam-width-value">8</span></label>
+              <input type="range" id="beam-width" min="2" max="20" value="8" step="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Target Configuration -->
+        <div class="config-section">
+          <div class="section-header" data-section="targets">
+            <span class="section-icon">🎯</span>
+            <span class="section-title">Target Configuration</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="targets-section">
+            <div class="control-group">
+              <label>Number of Targets: <span id="target-count-value">6</span></label>
+              <input type="range" id="target-count" min="1" max="15" value="6" step="1">
+            </div>
+            <div class="control-group">
+              <label>Target Size (px): <span id="target-size-value">9</span></label>
+              <input type="range" id="target-size" min="3" max="15" value="9" step="1">
+            </div>
+            <div class="control-group">
+              <label>Drift Speed: <span id="drift-speed-value">0.5</span></label>
+              <input type="range" id="drift-speed" min="0" max="2.0" value="0.5" step="0.1">
+            </div>
+            <button class="btn-regenerate" id="regenerate-targets">🔄 Regenerate Targets</button>
+          </div>
+        </div>
+
+        <!-- Section 4: Visual Settings -->
+        <div class="config-section">
+          <div class="section-header" data-section="visual">
+            <span class="section-icon">🎨</span>
+            <span class="section-title">Visual Settings</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="visual-section">
+            <div class="control-group">
+              <label>Canvas Width (px): <span id="canvas-width-value">960</span></label>
+              <input type="range" id="canvas-width" min="600" max="1400" value="960" step="20">
+            </div>
+            <div class="control-group">
+              <label>Canvas Height (px): <span id="canvas-height-value">520</span></label>
+              <input type="range" id="canvas-height" min="300" max="800" value="520" step="20">
+            </div>
+            <div class="control-group">
+              <label>Background Opacity: <span id="bg-opacity-value">0.94</span></label>
+              <input type="range" id="bg-opacity" min="0.5" max="1.0" value="0.94" step="0.05">
+            </div>
+            <div class="control-group toggle-group">
+              <label>
+                <input type="checkbox" id="glow-effect" checked>
+                <span>Enable Glow Effect</span>
+              </label>
+            </div>
+            <div class="control-group toggle-group">
+              <label>
+                <input type="checkbox" id="show-grid" checked>
+                <span>Show Grid Lines</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Range Circles -->
+        <div class="config-section">
+          <div class="section-header" data-section="circles">
+            <span class="section-icon">⭕</span>
+            <span class="section-title">Range Circles</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="circles-section">
+            <div class="control-group">
+              <label>Number of Circles: <span id="circle-count-value">4</span></label>
+              <input type="range" id="circle-count" min="2" max="8" value="4" step="1">
+            </div>
+            <div class="control-group">
+              <label>Circle Opacity: <span id="circle-opacity-value">0.6</span></label>
+              <input type="range" id="circle-opacity" min="0.2" max="1.0" value="0.6" step="0.1">
+            </div>
+            <div class="control-group toggle-group">
+              <label>
+                <input type="checkbox" id="show-range-labels" checked>
+                <span>Show Range Labels</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Detection & Scoring -->
+        <div class="config-section">
+          <div class="section-header" data-section="scoring">
+            <span class="section-icon">📊</span>
+            <span class="section-title">Detection &amp; Scoring</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="scoring-section">
+            <div class="control-group">
+              <label>Base Score (Close): <span id="score-close-value">90</span></label>
+              <input type="range" id="score-close" min="50" max="100" value="90" step="5">
+            </div>
+            <div class="control-group">
+              <label>Base Score (Far): <span id="score-far-value">45</span></label>
+              <input type="range" id="score-far" min="10" max="80" value="45" step="5">
+            </div>
+            <div class="control-group">
+              <label>Score Noise/Jitter: <span id="score-noise-value">6</span></label>
+              <input type="range" id="score-noise" min="0" max="20" value="6" step="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 7: Color Customization -->
+        <div class="config-section">
+          <div class="section-header" data-section="colors">
+            <span class="section-icon">🌈</span>
+            <span class="section-title">Color Customization</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="colors-section">
+            <div class="color-control">
+              <label>Very Low:</label>
+              <input type="color" id="color-very-low" value="#ff4d4d">
+            </div>
+            <div class="color-control">
+              <label>Low:</label>
+              <input type="color" id="color-low" value="#ff944d">
+            </div>
+            <div class="color-control">
+              <label>Medium:</label>
+              <input type="color" id="color-medium" value="#ffd24d">
+            </div>
+            <div class="color-control">
+              <label>High:</label>
+              <input type="color" id="color-high" value="#9cff4d">
+            </div>
+            <div class="color-control">
+              <label>Very High:</label>
+              <input type="color" id="color-very-high" value="#2bff88">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 8: Animation Controls -->
+        <div class="config-section">
+          <div class="section-header" data-section="controls">
+            <span class="section-icon">⚡</span>
+            <span class="section-title">Animation Controls</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="controls-section">
+            <div class="button-group">
+              <button class="btn-control" id="play-pause-btn">⏸️ Pause</button>
+              <button class="btn-control" id="reset-btn">🔄 Reset All</button>
+            </div>
+            <div class="button-group">
+              <button class="btn-control" id="export-btn">💾 Export Config</button>
+              <button class="btn-control" id="import-btn">📂 Import Config</button>
+            </div>
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Right Canvas Area -->
+    <main class="canvas-area">
+      <div class="canvas-header">
+        <div class="canvas-title">Front-Looking Sonar • Optical Detection</div>
+        <div class="canvas-info" id="range-info">Range: 200–800 m</div>
+      </div>
+      <div class="canvas-wrapper">
+        <canvas id="sonar" width="960" height="520"></canvas>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="dot" style="background:#ff4d4d"></span>Very Low</span>
+        <span class="legend-item"><span class="dot" style="background:#ff944d"></span>Low</span>
+        <span class="legend-item"><span class="dot" style="background:#ffd24d"></span>Medium</span>
+        <span class="legend-item"><span class="dot" style="background:#9cff4d"></span>High</span>
+        <span class="legend-item"><span class="dot" style="background:#2bff88"></span>Very High</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Status Bar -->
+  <footer class="status-bar">
+    <div class="status-item">
+      <span class="status-label">Beam Angle:</span>
+      <span class="status-value" id="status-beam-angle">-60.0°</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Targets Detected:</span>
+      <span class="status-value" id="status-targets">0</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">FPS:</span>
+      <span class="status-value" id="status-fps">60</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Current Range:</span>
+      <span class="status-value" id="status-range">200-800m</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">FOV:</span>
+      <span class="status-value" id="status-fov">120°</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
