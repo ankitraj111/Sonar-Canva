@@ -1180,7 +1180,10 @@ canvas {
 
 /* Tooltips */
 [title] {
-  position: relative;
+  
+
+
+  
   cursor: help;
 }
 
