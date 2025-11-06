@@ -1,0 +1,111 @@
+/* BODY & CONTAINER */
+body, html {
+  margin: 0; padding: 0; height: 100%;
+  background: #000814;
+  font-family: Arial, monospace;
+  color: #a8d8ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+#main-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 1300px;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* CANVAS */
+canvas#sonar {
+  background: none;
+  border-radius: 16px;
+  box-shadow: 0 0 54px #11314499, 0 0 0 1px #034366;
+  border: 3px solid #001d2a;
+  max-width: 950px;
+  display: block;
+}
+/* INFO PANEL */
+#info-panel {
+  background: #182742;
+  border-left: 2px solid #034366;
+  padding: 20px;
+  width: 320px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  color: #a8d8ff;
+  user-select: none;
+}
+#info-panel h2 {
+  color: #ffee88;
+  font-size: 18px;
+  letter-spacing: 1.7px;
+  margin-bottom: 15px;
+  font-weight: normal;
+}
+.section-header {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.range-levels span {
+  display: block;
+  opacity: 0.7;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+#detected-count {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 15px;
+  color: gray;
+}
+#detected-count.detected {
+  color: #00ffaa;
+}
+.target-list {
+  font-family: monospace;
+  font-size: 12px;
+  margin-top: 10px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.target-item {
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+.target-name {
+  flex: 1 0 20px;
+}
+.target-range,
+.target-angle {
+  flex: 0 0 60px;
+  text-align: right;
+  color: #a0c8ff;
+}
+.status-det {
+  flex: 1 0 80px;
+  text-align: right;
+  font-weight: bold;
+  color: #00ff00;
+}
+.status-undet {
+  flex: 1 0 80px;
+  text-align: right;
+  font-weight: normal;
+  color: #8888aa;
+}
+#system-status {
+  font-size: 10.5px;
+  color: gray;
+  margin-top: 15px;
+  line-height: 1.3em;
+}

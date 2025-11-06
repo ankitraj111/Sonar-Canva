@@ -110,14 +110,14 @@ const beamWidth = 8;
 let beamAngle = -fov / 2;
 
 // Some demo static targets (angle, distance)
-const demoTargets = [
-  {angle: -42, dist: 340},
-  {angle: -14, dist: 570},
-  {angle: 18, dist: 690},
-  {angle: 25, dist: 600},
-  {angle: 10, dist: 520},
-  {angle: -6, dist: 390}
-];
+// const demoTargets = [
+//   {angle: -42, dist: 340},
+//   {angle: -14, dist: 570},
+//   {angle: 18, dist: 690},
+//   {angle: 25, dist: 600},
+//   {angle: 10, dist: 520},
+//   {angle: -6, dist: 390}
+// ];
 
 function toRad(deg) {
   return (deg - 90) * Math.PI / 180;
@@ -165,18 +165,18 @@ function drawScene() {
   ctx.fillStyle="#fff"; ctx.font='13px Arial'; ctx.fillText("0°",pTop.x-8,pTop.y-9);
 
   // Scanning beam
-  ctx.save();
-  const start = beamAngle-beamWidth/2, end = beamAngle+beamWidth/2;
-  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, rMax, toRad(start), toRad(end), false); ctx.closePath();
-  const grad2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, rMax);
-  grad2.addColorStop(0,"rgba(0,255,255,0.09)");
-  grad2.addColorStop(1,"rgba(0,255,255,0.0)");
-  ctx.fillStyle = grad2; ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx+rMax*Math.cos(toRad(beamAngle)), cy+rMax*Math.sin(toRad(beamAngle)));
-  ctx.strokeStyle="#9ff"; ctx.lineWidth=2; ctx.shadowBlur=10; ctx.shadowColor="#9ff"; ctx.stroke();
-  ctx.shadowBlur=0; ctx.restore();
+//   ctx.save();
+//   const start = beamAngle-beamWidth/2, end = beamAngle+beamWidth/2;
+//   ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, rMax, toRad(start), toRad(end), false); ctx.closePath();
+//   const grad2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, rMax);
+//   grad2.addColorStop(0,"rgba(0,255,255,0.09)");
+//   grad2.addColorStop(1,"rgba(0,255,255,0.0)");
+//   ctx.fillStyle = grad2; ctx.fill();
+//   ctx.beginPath();
+//   ctx.moveTo(cx, cy);
+//   ctx.lineTo(cx+rMax*Math.cos(toRad(beamAngle)), cy+rMax*Math.sin(toRad(beamAngle)));
+//   ctx.strokeStyle="#9ff"; ctx.lineWidth=2; ctx.shadowBlur=10; ctx.shadowColor="#9ff"; ctx.stroke();
+//   ctx.shadowBlur=0; ctx.restore();
 
   // Sonar head triangle
   ctx.beginPath();
@@ -184,29 +184,29 @@ function drawScene() {
   ctx.fillStyle="#fff"; ctx.fill(); ctx.strokeStyle="#555"; ctx.stroke();
 
   // Targets + detection
-  let detectedCount = 0;
-  ctx.save();
-  ctx.beginPath(); ctx.moveTo(cx,cy);
-  ctx.arc(cx,cy,rMax,toRad(-fov/2),toRad(fov/2),false);
-  ctx.closePath(); ctx.clip();
+//   let detectedCount = 0;
+//   ctx.save();
+//   ctx.beginPath(); ctx.moveTo(cx,cy);
+//   ctx.arc(cx,cy,rMax,toRad(-fov/2),toRad(fov/2),false);
+//   ctx.closePath(); ctx.clip();
 
-  for(let t of demoTargets){
-    let p = polar(t.angle,t.dist);
-    let detected = Math.abs(beamAngle - t.angle) < (beamWidth/2);
+//   for(let t of demoTargets){
+//     let p = polar(t.angle,t.dist);
+//     let detected = Math.abs(beamAngle - t.angle) < (beamWidth/2);
 
-    ctx.beginPath();
-    ctx.arc(p.x,p.y, detected ? 14 : 11, 0, Math.PI*2);
-    ctx.fillStyle = detected ? "#00ffaacc" : "rgba(180,220,255,0.29)";
-    ctx.fill();
+//     ctx.beginPath();
+//     ctx.arc(p.x,p.y, detected ? 14 : 11, 0, Math.PI*2);
+//     ctx.fillStyle = detected ? "#00ffaacc" : "rgba(180,220,255,0.29)";
+//     ctx.fill();
 
     // Highlight + Detected label
-    if(detected) {
-      detectedCount++;
-      ctx.fillStyle = "#fff";
-      ctx.font = "14px Arial";
-      ctx.fillText("Detected", p.x+16, p.y-8);
-    }
-  }
+    // if(detected) {
+    //   detectedCount++;
+    //   ctx.fillStyle = "#fff";
+    //   ctx.font = "14px Arial";
+//     //   ctx.fillText("Detected", p.x+16, p.y-8);
+//     }
+//   }
   ctx.restore();
 
   // Update target counter

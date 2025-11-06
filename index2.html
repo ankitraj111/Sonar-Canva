@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sonar Radar with ATD & Labels</title>
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+  <div id="main-container">
+    <canvas id="sonar" width="950" height="480"></canvas>
+    <div id="info-panel">
+      <h2>SONAR INFO</h2>
+      <div class="section-header">RANGE LEVELS:</div>
+      <div class="range-levels">
+        <span>200m</span>
+        <span>400m</span>
+        <span>600m</span>
+        <span>800m</span>
+      </div>
+      <div id="detected-count">DETECTED: 0/6</div>
+      <div class="section-header" style="margin-top: 25px;">TARGET LIST:</div>
+      <div class="target-list" id="target-list"></div>
+      <div id="system-status">
+        BEAM ANGLE: <span id="beam-angle">0°</span><br />
+        DETECTION THRESHOLD: 4° <br />
+        FOV: 100°
+      </div>
+    </div>
+  </div>
+  <script src="app2.js"></script>
+</body>
+</html>
