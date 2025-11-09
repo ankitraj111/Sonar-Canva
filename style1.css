@@ -1,0 +1,43 @@
+/* body {
+  background: #000814;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  margin: 40px auto 0 auto;
+  background: none;
+  border-radius: 16px;
+  box-shadow: 0 0 54px #11314499, 0 0 0 1px #034366;
+  border: 3px solid #001d2a;
+  max-width: 950px;
+}
+
+
+ */
+
+ body {
+  background: #000814;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  margin: 40px auto 0 auto;
+  background: none;
+  border-radius: 16px;
+  box-shadow: 0 0 54px #11314499, 0 0 0 1px #034366;
+  border: 3px solid #001d2a;
+  max-width: 950px;
+}
+#footer {
+  letter-spacing: 1.7px;
+  background: #182742;
+  border-radius: 8px;
+  box-shadow: 0 1px 12px #333b;
+  padding: 7px 0;
+  width: 350px;
+  margin: 18px auto 0 auto;
+}
