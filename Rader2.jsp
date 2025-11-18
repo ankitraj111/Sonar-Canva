@@ -213,3 +213,33 @@ function animate(){
 // JavaScript ka entrypoint
 initializeGPSTargets();
 animate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head contents -->
+</head>
+<body>
+    <!-- HTML/JSP/JavaScript contents -->
+</body>
+</html>
