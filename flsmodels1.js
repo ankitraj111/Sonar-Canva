@@ -1,4 +1,4 @@
-// sonar-fixed.js  — Robust, DOM-ready radar engine
+// sonar-fixed.js — Robust, DOM-ready radar engine (improved)
 (function () {
   'use strict';
 
@@ -24,16 +24,36 @@
       TRAIL_LENGTH: 20
     };
 
-    // Canvas (id must match your HTML: <canvas id="sonar">)
-    const canvas = document.getElementById('sonarRadar');
+    // Canvas (try both ids to match previous HTML variants)
+    let canvas = document.getElementById('sonarRadar') || document.getElementById('sonar');
     if (!canvas) {
-      console.error("Canvas element with id 'sonar' not found. Make sure <canvas id='sonar'> exists.");
+      console.error("Canvas element with id 'sonarRadar' or 'sonar' not found. Make sure your page includes <canvas id='sonarRadar'> or <canvas id='sonar'>.");
       return;
     }
 
-    // Optional: force canvas size to CONFIG (uncomment if you want)
-    // canvas.width = CONFIG.RADAR_WIDTH;
-    // canvas.height = CONFIG.RADAR_HEIGHT;
+    // High-DPI handling: use CSS size but scale canvas pixel buffer
+    function sizeCanvasToDisplaySize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const displayWidth = Math.max(1, Math.floor(rect.width));
+      const displayHeight = Math.max(1, Math.floor(rect.height));
+      // If canvas width/height differ from display size * dpr, update
+      if (canvas.width !== Math.floor(displayWidth * dpr) || canvas.height !== Math.floor(displayHeight * dpr)) {
+        canvas.width = Math.floor(displayWidth * dpr);
+        canvas.height = Math.floor(displayHeight * dpr);
+        canvas.style.width = displayWidth + 'px';
+        canvas.style.height = displayHeight + 'px';
+        return true;
+      }
+      return false;
+    }
+
+    // If canvas has no explicit size, set default CSS size from CONFIG
+    if (!canvas.style.width && !canvas.style.height && (!canvas.width || !canvas.height)) {
+      canvas.style.width = CONFIG.RADAR_WIDTH + 'px';
+      canvas.style.height = CONFIG.RADAR_HEIGHT + 'px';
+      // canvas.width/height will be set in sizeCanvasToDisplaySize for DPR
+    }
 
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -42,15 +62,13 @@
     }
 
     // Geometry (derived after canvas exists)
-    let cx = canvas.width / 2;
-    let cy = canvas.height - 28;
-    let maxR = Math.min(canvas.width * 0.48, canvas.height - 80);
+    let cx = 0, cy = 0, maxR = 0;
 
     // Use global referencePosition / gpsTargets if provided by JSP or backend.
     // Otherwise use defaults / empty array.
     let referencePosition = (window.referencePosition && Array.isArray(window.referencePosition) && window.referencePosition.length >= 2)
       ? window.referencePosition.slice()
-      : [19.987, 109.000]; // default; you can override from JSP or other scripts
+      : [19.987, 109.000]; // default; override from JSP/backend as needed
 
     // If window.gpsTargets exists, use it; else start empty
     let gpsTargets = (window.gpsTargets && Array.isArray(window.gpsTargets))
@@ -64,12 +82,18 @@
     // ====== Helpers ======
     function deg2rad(d){ return d * Math.PI / 180; }
     function rad2deg(r){ return r * 180 / Math.PI; }
-    function normalizeAngle(a){ a = a % 360; if(a > 180) a -= 360; else if(a < -180) a += 360; return a; }
-    function toRad(deg){ return (deg - 90) * Math.PI / 180; }
+    function normalizeAngle(a){
+      // returns angle in [-180,180]
+      a = ((a % 360) + 360) % 360; // now [0,360)
+      if (a > 180) a -= 360;
+      return a;
+    }
+    function toRad(deg){ return (deg - 90) * Math.PI / 180; } // convert compass degrees (0=north) to canvas rad
 
     function polar(angle, dist){
       // clamp range
-      const r = (dist / Math.max(CONFIG.MAX_RANGE, 1)) * maxR;
+      const range = Math.max(CONFIG.MIN_RANGE, Math.min(CONFIG.MAX_RANGE, dist));
+      const r = (range / Math.max(CONFIG.MAX_RANGE, 1)) * maxR;
       const a = toRad(angle);
       return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
     }
@@ -83,19 +107,29 @@
     }
 
     function calculateDistance(from, to){
-      const R = 6371000;
+      const R = 6371000; // meters
       const lat1 = deg2rad(from[0]), lat2 = deg2rad(to[0]);
       const dLat = deg2rad(to[0] - from[0]), dLon = deg2rad(to[1] - from[1]);
-      const a = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+      const a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)*Math.sin(dLon/2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
 
     // Recompute geometry (call if canvas resized)
     function updateGeometry() {
-      cx = canvas.width / 2;
-      cy = canvas.height - 28;
-      maxR = Math.min(canvas.width * 0.48, canvas.height - 80);
+      // make sure canvas pixel buffer matches CSS size and DPR
+      sizeCanvasToDisplaySize();
+      const dpr = window.devicePixelRatio || 1;
+      // canvas.width/height are physical pixels; get logical CSS pixels for placement by dividing by dpr
+      const logicalWidth = canvas.width / dpr;
+      const logicalHeight = canvas.height / dpr;
+
+      // We'll draw using scaled coordinates: scale the context so drawing can use logical pixels
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      cx = logicalWidth / 2;
+      cy = logicalHeight - 28; // base of radar near bottom
+      maxR = Math.min(logicalWidth * 0.48, logicalHeight - 80);
     }
 
     // ====== Initialize targets from gpsTargets array ======
@@ -103,7 +137,6 @@
       targets = [];
       nextTargetId = 1;
       if (!Array.isArray(gpsTargets) || gpsTargets.length === 0) {
-        // nothing to show — keep blank (ok)
         console.info('Radar: gpsTargets empty — radar will be blank until targets added.');
         return;
       }
@@ -111,8 +144,10 @@
       for (let i = 0; i < gpsTargets.length; i++) {
         const coord = gpsTargets[i];
         if (!Array.isArray(coord) || coord.length < 2) continue;
-        const bearing = calculateBearing(referencePosition, coord);
-        const distance = calculateDistance(referencePosition, coord);
+        const lat = parseFloat(coord[0]), lon = parseFloat(coord[1]);
+        if (Number.isNaN(lat) || Number.isNaN(lon)) continue;
+        const bearing = calculateBearing(referencePosition, [lat, lon]);
+        const distance = calculateDistance(referencePosition, [lat, lon]);
         targets.push({
           id: nextTargetId++,
           name: String.fromCharCode(65 + (i % 26)),
@@ -132,7 +167,8 @@
 
     // ====== Drawing ======
     function drawBackground(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // clear using logical CSS pixels dimensions
+      ctx.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
       const a1 = toRad(-CONFIG.FOV/2), a2 = toRad(CONFIG.FOV/2);
 
       ctx.save();
@@ -242,7 +278,7 @@
       const lineHeight = 22;
       const boxWidth = 200;
       const boxHeight = 38 + visibleTargets.length * lineHeight;
-      const x = canvas.width - boxWidth - 22;
+      const x = (canvas.width / (window.devicePixelRatio || 1)) - boxWidth - 22;
       const y = 24;
 
       ctx.fillStyle = 'rgba(20,45,75,0.92)';
@@ -301,10 +337,14 @@
     requestAnimationFrame(animate);
 
     // optional: handle window resize (recompute geometry)
+    let resizeTimer = null;
     window.addEventListener('resize', function () {
-      updateGeometry();
-      // re-run target projection if necessary
-      initializeGPSTargets();
+      // throttle reflow
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        updateGeometry();
+        initializeGPSTargets();
+      }, 120);
     });
 
   }); // onReady
